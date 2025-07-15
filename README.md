@@ -1,4 +1,5 @@
-# Fuwari
+# Yao's Blog
+> Astro + Fuwari theme + Netify Deploy
 
 ## Frontmatter of Post
 
