@@ -19,7 +19,7 @@ draft: false
 ## 环境准备
 - __Node.js和pnpm(perfomant node package manager)__
 	
-  去<a href="nodejs.org" title="nodejs.org">Node官网</a>下载LTS（long term support）版本，直接CV bash script即可，会自动下载好**nvm(node version manager)**和**pnpm**
+  去<a href="https://nodejs.org" title="nodejs.org">Node官网</a>下载LTS（long term support）版本，直接CV bash script即可，会自动下载好**nvm(node version manager)**和**pnpm**
 	
   > PS：如果要安装其他版本的Node（eg. v20），用**nvm**
   >
