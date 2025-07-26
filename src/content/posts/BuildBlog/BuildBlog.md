@@ -33,7 +33,9 @@ draft: false
 
 ## <a href="https://docs.astro.build/zh-cn/tutorial/0-introduction/" title="贴心的astro教程">Astro DOCS Tutorial: Build a blog</a>
 
-- *Failed to connect to github.com port 443*问题
+- :::warning
+  **Failed to connect to github.com port 443**问题
+  :::
 
   - **本质原因：Git不自动使用你系统的“全局代理”**
 
@@ -42,7 +44,7 @@ draft: false
     > 没有为 Git 单独设置代理
     > 设置的代理地址或端口不对（比如 Clash 开的不是 7890）
 
-  - 解决方案
+  - **解决方案**
 
     1. 确认本地代理端口
 
@@ -72,12 +74,14 @@ draft: false
        git clone https://github.com/github/gitignore.git
        ```
 
-    > PS：取消代理设置（恢复默认直连）
-    >
-    > ```shell
-    > git config --global --unset http.proxy
-    > git config --global --unset https.proxy
-    > ```
+     :::tip
+     取消代理设置（恢复默认直连）
+     :::
+     ```shell
+     git config --global --unset http.proxy
+     git config --global --unset https.proxy
+     ```
+     
 
 # 开始搭建
 
