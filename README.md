@@ -1,4 +1,5 @@
 # Yao's Blog
+
 > Astro + Fuwari theme + Netify Deploy
 
 ## Frontmatter of Post
@@ -12,6 +13,6 @@ image: ./cover.jpg
 tags: [Foo, Bar]
 category: Front-end
 draft: false
-lang: zh-CN      # 仅当文章语言与 `config.ts` 中的网站语言不同时需要设置
+lang: zh-CN # 仅当文章语言与 `config.ts` 中的网站语言不同时需要设置
 ---
 ```
