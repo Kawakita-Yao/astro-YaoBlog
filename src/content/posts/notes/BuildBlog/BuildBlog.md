@@ -1,10 +1,10 @@
 ---
-title: Astro + Fuwai主题 + Netify部署到Github
+title: Astro + Fuwai 主题 + Netlify 部署的 GitHub 项目
 published: 2025-07-15
 description: ''
 image: './astro.jpg'      # cover image
 tags: [Astro]
-category: 'Examples'
+category: 'Notes'
 draft: false 
 ---
 
