@@ -3,8 +3,8 @@ title: Astro + Fuwai 主题 + Netlify 部署的 GitHub 项目
 published: 2025-07-15
 description: "A step-by-step guide to building a blog using Astro and deploying it on Netlify."
 image: "/images/astro.jpg" # cover image
-tags: [Astro, Blog]
-category: "Notes"
+tags: [Astro, Blog, Netlify, Deploy, Static Site, GitHub]
+category: "Static Site"
 draft: false
 ---
 

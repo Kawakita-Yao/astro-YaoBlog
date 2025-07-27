@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Yao</title><description>Blog</description><link>https://kawakita.netlify.app/</link><language>zh_CN</language><item><title>JavaScrpit Intro</title><link>https://kawakita.netlify.app/posts/notes/intro2js/</link><guid isPermaLink="true">https://kawakita.netlify.app/posts/notes/intro2js/</guid><description>Notes on JavaScript fundamentals for beginners.</description><pubDate>Sat, 26 Jul 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;JS v.s. Python / C&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;JS 与 C / Python 的异同速览&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;Variables scope&lt;/h1&gt;
+&lt;h1&gt;Types Coercion&lt;/h1&gt;
+&lt;p&gt;├── 02-variables-scope.md # var / let / const，作用域 &amp;amp; Hoisting
+├── 03-types-coercion.md # 动态类型、类型转换 &amp;amp; == vs ===&lt;/p&gt;
+&lt;h1&gt;Functions Closure # 函数、箭头函数、闭包&lt;/h1&gt;
+&lt;h1&gt;JS Objects Classes&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对象、构造函数、class&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;构造函数写法（ES5 风格）&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;function Car(brand) {
+  this.brand = brand;
+  this.model = &quot;xxx&quot;;
+  this.year = 0;
+
+  this.set_model = function (model) {
+    this.model = model;
+  };
+  this.set_year = function (year) {
+    this.year = year;
+  };
+  this.get_info = function () {
+    console.log(
+      `Brand: ${this.brand}, Model: ${this.model}, Year: ${this.year}`
+    );
+  };
+}
+
+const car = new Car(&quot;BMW&quot;);
+car.set_model(&quot;i8&quot;);
+car.set_year(2022);
+car.get_info(); // Brand: BMW, Model: i8, Year: 2022
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;├── 05-objects-arrays.md # 对象、数组操作与解构
+├── 06-this-and-context.md # this、call/apply/bind
+├── 07-async-await.md # 异步模型、Promise、async/await
+├── 08-dom-basics.md # DOM API 简介，常用操作
+├── 09-event-handling.md # 事件绑定、冒泡、事件对象
+├── 10-modules-fetch.md # 模块 import/export、fetch 请求
+├── 11-common-gotchas.md # JS 陷阱、易错点、怪异行为&lt;/p&gt;
+</content:encoded></item><item><title>Astro + Fuwai 主题 + Netlify 部署的 GitHub 项目</title><link>https://kawakita.netlify.app/posts/notes/buildblog/</link><guid isPermaLink="true">https://kawakita.netlify.app/posts/notes/buildblog/</guid><description>A step-by-step guide to building a blog using Astro and deploying it on Netlify.</description><pubDate>Tue, 15 Jul 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Intro&lt;/h1&gt;
+&lt;p&gt;本文记录了如何使用 Astro 框架，配合 Fuwai 博客主题，并部署到 Netlify 上，构建一个现代化的个人博客。&amp;lt;br/&amp;gt;&lt;/p&gt;
+&lt;h1&gt;准备工作&lt;/h1&gt;
+&lt;h2&gt;1. 环境准备&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本教程开发环境版本参考：&amp;lt;br/&amp;gt;
+Node.js &amp;lt;= 22&amp;lt;br/&amp;gt;
+pnpm &amp;lt;= 9&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;安装 Node.js 和 pnpm(perfomant node package manager)&lt;/h3&gt;
+&lt;p&gt;去&amp;lt;a href=&quot;https://nodejs.org&quot; title=&quot;nodejs.org&quot;&amp;gt;Node 官网&amp;lt;/a&amp;gt;下载 LTS（long term support）版本，直接 CV bash script 即可，会自动下载好&lt;strong&gt;nvm(node version manager)&lt;strong&gt;和&lt;/strong&gt;pnpm&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;:::tip
+如果要安装其他版本的 Node（eg. v20），用&lt;strong&gt;nvm&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;nvm install 20
+nvm use 20
+nvm ls 									# 查看你安装过的 Node.js 版本
+nvm alias default 22 		# 默认v22
+nvm uninstall &amp;lt;version&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;h3&gt;可选：Astro 官方教程&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;lt;a href=&quot;https://docs.astro.build/zh-cn/tutorial/0-introduction/&quot; title=&quot;贴心的astro教程&quot;&amp;gt;Astro DOCS Tutorial: Build a blog&amp;lt;/a&amp;gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;2. 常见问题：Failed to connect to github.com port 443&lt;/h2&gt;
+&lt;p&gt;:::important
+Git 没有正确设置代理
+:::&lt;/p&gt;
+&lt;h3&gt;本质原因：Git 不自动使用你系统的“全局代理”&lt;/h3&gt;
+&lt;p&gt;Git 命令行工具（如 &lt;code&gt;git clone&lt;/code&gt;）默认不会自动走你的系统代理或翻墙工具，它&lt;strong&gt;需要手动配置代理地址&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;没有为 Git 单独设置代理&amp;lt;br/&amp;gt;
+设置的代理地址或端口不对（比如 Clash 开的不是 7890&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;解决方案&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;确认 Clash 的 HTTP 代理端口&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为 Git 设置代理（HTTP + HTTPS）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git config --global http.proxy http://127.0.0.1:7890
+git config --global https.proxy http://127.0.0.1:7890
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;:::note
+PS：127.0.0.1 是特殊保留地址，和 localhost 等价
+:::&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可选：关闭 SSL 验证（避免某些证书问题）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git config --global http.sslVerify false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;验证&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git config --global --get http.proxy
+git config --global --get https.proxy
+# 尝试克隆
+git clone https://github.com/github/gitignore.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;:::tip
+取消代理设置（恢复默认直连）
+:::&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git config --global --unset http.proxy
+git config --global --unset https.proxy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;开始搭建 Blog&lt;/h1&gt;
+&lt;h2&gt;1. 使用 create-fuwari 在本地初始化项目&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;# pnpm
+pnpm create fuwari@latest
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;2. 配置博客基础信息&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;编辑 &lt;code&gt;src/config.ts&lt;/code&gt; 自定义博客标题、副标题、作者名等&lt;/li&gt;
+&lt;li&gt;添加 favicon、封面图、作者头像等资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;3. 创建新文章&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pnpm new-post &amp;lt;filename&amp;gt;&lt;/code&gt; 创建新文章，并在 &lt;code&gt;src/content/posts/&lt;/code&gt; 中编辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;4. 常见 Command&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;strong&gt;Command&lt;/strong&gt;&lt;/th&gt;
+&lt;th&gt;&lt;strong&gt;Action&lt;/strong&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm install &amp;amp;&amp;amp; pnpm add sharp&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;安装依赖&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm dev&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;在 &lt;code&gt;localhost:4321&lt;/code&gt; 启动本地开发服务器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm build&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;构建网站至 &lt;code&gt;./dist/&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm preview&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;本地预览已构建的网站&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm new-post &amp;lt;filename&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;创建新文章&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm astro ...&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;执行 &lt;code&gt;astro add&lt;/code&gt;, &lt;code&gt;astro check&lt;/code&gt; 等指令&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm astro --help&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;显示 Astro CLI 帮助&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1&gt;部署到 Netlify&lt;/h1&gt;
+&lt;p&gt;将博客部署到 &lt;a href=&quot;https://www.netlify.com/&quot;&gt;Netlify&lt;/a&gt; 上&lt;/p&gt;
+&lt;h2&gt;Step1: 提交项目到 GitHub&lt;/h2&gt;
+&lt;p&gt;初始化 Git 仓库（如果还没有）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git init
+git remote add origin https://github.com/&amp;lt;your-username&amp;gt;/&amp;lt;repo-name&amp;gt;.git
+git add .
+git commit -m &quot;init: blog project&quot;
+git push -u origin main #!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;:::note
+&lt;code&gt;git push -u origin main&lt;/code&gt;这个命令：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数/部分&lt;/th&gt;
+&lt;th&gt;含义说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-u&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;（全称 &lt;code&gt;--set-upstream&lt;/code&gt;）设置默认的远程分支与本地分支的跟踪关系&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;origin&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;远程仓库的名称，通常默认是 &lt;code&gt;origin&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;main&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;推送的本地分支名称，通常是 &lt;code&gt;main&lt;/code&gt;，也可能是 &lt;code&gt;master&lt;/code&gt; 或其他自定义分支&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;:::&lt;/p&gt;
+&lt;h2&gt;Step2: 确保 astro.config.mjs 中配置了网站地址（用于正确生成 sitemap 和路径）：&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;export default defineConfig({
+  site: &quot;https://&amp;lt;your-name&amp;gt;.netlify.app&quot;, // 改成你 Netlify 分配的地址
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;根据&lt;a href=&quot;https://docs.astro.build/en/guides/deploy/&quot;&gt;官方 Guides&lt;/a&gt;部署到 Netlify，运行以下命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pnpm astro add netlify
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Step3: 最后在 Netlify 上导入 GitHub 里面的 Repo 即可&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/images/netlify.png&quot; alt=&quot;Netlify部署&quot; /&gt;&lt;/p&gt;
+</content:encoded></item></channel></rss>

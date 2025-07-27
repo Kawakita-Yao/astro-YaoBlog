@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /_astro/
+
+Sitemap: https://kawakita.netlify.app/sitemap-index.xml
